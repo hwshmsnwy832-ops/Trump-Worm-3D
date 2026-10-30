@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Download project
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Setup Java
@@ -20,8 +20,7 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
         with:
-          packages: 'platform-tools, platforms;android-35, build-tools;35.0.0'
-          accept-android-sdk-licenses: true
+          packages: 'platform-tools platforms;android-35 build-tools;35.0.0'
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
@@ -35,9 +34,8 @@ jobs:
         run: |
           APK="app/build/outputs/apk/debug/app-debug.apk"
           test -s "$APK"
-          unzip -l "$APK"
-          unzip -l "$APK" | grep -q "classes.dex"
-          echo "APK verification successful"
+          unzip -t "$APK"
+          unzip -l "$APK" | grep "classes.dex"
           ls -lh "$APK"
 
       - name: Upload APK
