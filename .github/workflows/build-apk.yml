@@ -37,7 +37,8 @@ jobs:
           unzip -t "$APK"
           unzip -l "$APK" | grep "classes.dex"
           ls -lh "$APK"
-                    unzip -l "$APK" | grep -E 'classes[0-9]*\.dex'
+          unzip -p "$APK" classes2.dex | strings | grep -E 'MainActivity|SnakeRenderer'|| true
+          unzip -l "$APK" | grep -E 'classes[0-9]*\.dex'
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
